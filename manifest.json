@@ -1,0 +1,33 @@
+{
+  "name": "Naoshima Hiragana - ひらがな学習アプリ",
+  "short_name": "Naoshima ひらがな",
+  "description": "直島でひらがなを学ぼう！オフラインで使える学習アプリ",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316",
+  "orientation": "portrait",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "games"],
+  "screenshots": [
+    {
+      "src": "screenshot1.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ]
+}
