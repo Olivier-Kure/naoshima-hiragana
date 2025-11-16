@@ -7,29 +7,19 @@
   <meta name="theme-color" content="#f97316">
   <title>Naoshima Hiragana - ひらがな学習アプリ</title>
   
-  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
-  
-  <!-- アイコン -->
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   
-  <!-- iOS Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Naoshima Hiragana">
   
-  <!-- React and Babel -->
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-  
-  <!-- Tailwind CSS -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Lucide Icons -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
   
   <style>
     body {
@@ -39,7 +29,6 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    
     #root {
       min-height: 100vh;
     }
@@ -50,7 +39,6 @@
 
   <script type="text/babel">
     const { useState, useEffect } = React;
-    const { RefreshCw, Trophy, Target, Award, Download } = lucide;
 
     const NaoshimaHiraganaPWA = () => {
       const [installPrompt, setInstallPrompt] = useState(null);
@@ -300,7 +288,7 @@
               {installPrompt && !isInstalled && (
                 <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-4 mb-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <Download size={24} className="text-blue-600" />
+                    <span className="text-3xl">📥</span>
                     <div>
                       <h3 className="font-bold text-blue-800">アプリをインストール</h3>
                       <p className="text-sm text-blue-600">オフラインで使用可能！</p>
@@ -337,11 +325,11 @@
                 <div className="bg-yellow-50 rounded-xl p-4 mb-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Trophy size={20} className="inline-block text-yellow-600 mr-2" />
+                      <span className="text-2xl mr-2">🏆</span>
                       <span className="text-yellow-800 font-semibold">合計: {totalScore}</span>
                     </div>
                     <div>
-                      <Award size={20} className="inline-block text-orange-600 mr-2" />
+                      <span className="text-2xl mr-2">🎖️</span>
                       <span className="text-orange-800 font-semibold">{roundsCompleted} ラウンド</span>
                     </div>
                   </div>
@@ -421,7 +409,7 @@
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <div className="text-center">
-                    <Target size={20} className="text-orange-500 mx-auto mb-1" />
+                    <span className="text-2xl">🎯</span>
                     <div className="text-2xl font-bold text-orange-600">{roundScore}</div>
                     <div className="text-xs text-gray-500">ポイント</div>
                   </div>
@@ -430,8 +418,8 @@
                     <div className="text-xs text-gray-500">問題</div>
                   </div>
                 </div>
-                <button onClick={resetGame} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-                  <RefreshCw size={20} className="text-gray-600" />
+                <button onClick={resetGame} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-2xl">
+                  🔄
                 </button>
               </div>
             </div>
@@ -493,7 +481,6 @@
     ReactDOM.render(<NaoshimaHiraganaPWA />, document.getElementById('root'));
   </script>
 
-  <!-- Service Worker登録 -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
