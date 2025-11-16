@@ -105,6 +105,7 @@
       const [roundsCompleted, setRoundsCompleted] = useState(0);
       const [installPrompt, setInstallPrompt] = useState(null);
       const [isInstalled, setIsInstalled] = useState(false);
+      const [answered, setAnswered] = useState(false);
 
       useEffect(() => {
         const handleBeforeInstallPrompt = (e) => {
@@ -174,6 +175,7 @@
         setCurrentWord(word);
         setOptions(allOptions);
         setFeedback('');
+        setAnswered(false);
         setUsedWords([...usedWords, word.romaji]);
         const newUsedTypes = new Set(usedTypes);
         word.types.forEach(type => newUsedTypes.add(type));
@@ -181,22 +183,28 @@
       };
 
       const handleAnswer = (selectedRomaji) => {
+        if (answered) return;
+        
         const isCorrect = selectedRomaji === currentWord.romaji;
+        setAnswered(true);
+        
         if (isCorrect) {
           setRoundScore(roundScore + 10);
           setFeedback('✓ 正解！');
         } else {
           setFeedback(`✗ 不正解: ${currentWord.romaji}`);
         }
-        setTimeout(() => {
-          const nextQuestion = questionNumber + 1;
-          setQuestionNumber(nextQuestion);
-          if (nextQuestion >= 10) {
-            finishRound();
-          } else {
-            setCurrentWord(null);
-          }
-        }, 1500);
+      };
+
+      const handleNext = () => {
+        const nextQuestion = questionNumber + 1;
+        setQuestionNumber(nextQuestion);
+        
+        if (nextQuestion >= 10) {
+          finishRound();
+        } else {
+          setCurrentWord(null);
+        }
       };
 
       const finishRound = () => {
@@ -218,6 +226,7 @@
         setQuestionNumber(0);
         setCurrentWord(null);
         setFeedback('');
+        setAnswered(false);
         setShowResults(false);
       };
 
@@ -228,6 +237,7 @@
         setQuestionNumber(0);
         setCurrentWord(null);
         setFeedback('');
+        setAnswered(false);
         setShowStart(true);
         setShowResults(false);
         setTotalScore(0);
@@ -362,9 +372,9 @@
                 </div>
                 <div className="space-y-3">
                   {options.map((option, index) => (
-                    <button key={index} onClick={() => handleAnswer(option)} disabled={feedback !== ''}
+                    <button key={index} onClick={() => handleAnswer(option)} disabled={answered}
                       className={`w-full p-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
-                        feedback === '' ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white shadow-md hover:shadow-lg'
+                        !answered ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white shadow-md hover:shadow-lg'
                         : option === currentWord.romaji ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'
                       }`}>
                       {option}
@@ -372,10 +382,15 @@
                   ))}
                 </div>
                 {feedback && (
-                  <div className={`mt-6 p-4 rounded-xl text-center font-bold text-lg ${
-                    feedback.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                  }`}>
-                    {feedback}
+                  <div>
+                    <div className={`mt-6 p-4 rounded-xl text-center font-bold text-lg ${
+                      feedback.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {feedback}
+                    </div>
+                    <button onClick={handleNext} className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                      次へ ➜
+                    </button>
                   </div>
                 )}
               </div>
