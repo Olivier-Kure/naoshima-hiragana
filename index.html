@@ -26,81 +26,72 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
-    #root {
-      min-height: 100vh;
-    }
+    #root { min-height: 100vh; }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { useState, useEffect } = React;
+    const words = [
+      { hiragana: 'なおしま', romaji: 'naoshima', fr: 'Naoshima (île)', types: ['清音', '長音'] },
+      { hiragana: 'うみ', romaji: 'umi', fr: 'Mer', types: ['清音'] },
+      { hiragana: 'しま', romaji: 'shima', fr: 'Île', types: ['清音'] },
+      { hiragana: 'いえ', romaji: 'ie', fr: 'Maison', types: ['清音'] },
+      { hiragana: 'まち', romaji: 'machi', fr: 'Ville', types: ['清音'] },
+      { hiragana: 'やま', romaji: 'yama', fr: 'Montagne', types: ['清音'] },
+      { hiragana: 'かわ', romaji: 'kawa', fr: 'Rivière', types: ['清音'] },
+      { hiragana: 'はし', romaji: 'hashi', fr: 'Pont', types: ['清音'] },
+      { hiragana: 'みち', romaji: 'michi', fr: 'Chemin', types: ['清音'] },
+      { hiragana: 'ひと', romaji: 'hito', fr: 'Personne', types: ['清音'] },
+      { hiragana: 'あめ', romaji: 'ame', fr: 'Pluie', types: ['清音'] },
+      { hiragana: 'はれ', romaji: 'hare', fr: 'Beau temps', types: ['清音'] },
+      { hiragana: 'かぼちゃ', romaji: 'kabocha', fr: 'Citrouille', types: ['濁音', '拗音'] },
+      { hiragana: 'びじゅつかん', romaji: 'bijutsukan', fr: 'Musée', types: ['濁音', '拗音', '撥音'] },
+      { hiragana: 'ばんごはん', romaji: 'bangohan', fr: 'Dîner', types: ['濁音', '撥音'] },
+      { hiragana: 'あさごはん', romaji: 'asagohan', fr: 'Petit-déjeuner', types: ['濁音'] },
+      { hiragana: 'ひるごはん', romaji: 'hirugohan', fr: 'Déjeuner', types: ['濁音'] },
+      { hiragana: 'おみやげ', romaji: 'omiyage', fr: 'Souvenir', types: ['濁音', '拗音'] },
+      { hiragana: 'じてんしゃ', romaji: 'jitensha', fr: 'Vélo', types: ['濁音', '拗音', '撥音'] },
+      { hiragana: 'てんらんかい', romaji: 'tenrankai', fr: 'Exposition', types: ['濁音', '撥音'] },
+      { hiragana: 'かぞく', romaji: 'kazoku', fr: 'Famille', types: ['濁音'] },
+      { hiragana: 'ちず', romaji: 'chizu', fr: 'Carte', types: ['濁音'] },
+      { hiragana: 'きっぷ', romaji: 'kippu', fr: 'Billet', types: ['半濁音', '促音'] },
+      { hiragana: 'さくひん', romaji: 'sakuhin', fr: 'Œuvre', types: ['半濁音', '撥音'] },
+      { hiragana: 'にほん', romaji: 'nihon', fr: 'Japon', types: ['半濁音', '撥音'] },
+      { hiragana: 'さんぽ', romaji: 'sanpo', fr: 'Promenade', types: ['半濁音', '撥音'] },
+      { hiragana: 'りょかん', romaji: 'ryokan', fr: 'Auberge', types: ['拗音', '撥音'] },
+      { hiragana: 'しゃしん', romaji: 'shashin', fr: 'Photo', types: ['拗音', '撥音'] },
+      { hiragana: 'みずたま', romaji: 'mizutama', fr: 'Pois', types: ['拗音'] },
+      { hiragana: 'ともだち', romaji: 'tomodachi', fr: 'Ami', types: ['拗音'] },
+      { hiragana: 'きょう', romaji: 'kyou', fr: "Aujourd'hui", types: ['拗音', '長音'] },
+      { hiragana: 'ちゃいろ', romaji: 'chairo', fr: 'Marron', types: ['拗音'] },
+      { hiragana: 'がっこう', romaji: 'gakkou', fr: 'École', types: ['促音', '濁音', '長音'] },
+      { hiragana: 'ざっし', romaji: 'zasshi', fr: 'Magazine', types: ['促音', '濁音'] },
+      { hiragana: 'きって', romaji: 'kitte', fr: 'Timbre', types: ['促音'] },
+      { hiragana: 'まっちゃ', romaji: 'matcha', fr: 'Thé vert', types: ['促音', '拗音'] },
+      { hiragana: 'てんき', romaji: 'tenki', fr: 'Météo', types: ['撥音'] },
+      { hiragana: 'みなと', romaji: 'minato', fr: 'Port', types: ['撥音'] },
+      { hiragana: 'こうえん', romaji: 'kouen', fr: 'Parc', types: ['撥音', '長音'] },
+      { hiragana: 'せんせい', romaji: 'sensei', fr: 'Professeur', types: ['撥音', '長音'] },
+      { hiragana: 'でんしゃ', romaji: 'densha', fr: 'Train', types: ['撥音', '濁音', '拗音'] },
+      { hiragana: 'べんとう', romaji: 'bentou', fr: 'Bento', types: ['撥音', '濁音', '長音'] },
+      { hiragana: 'おおきい', romaji: 'ookii', fr: 'Grand', types: ['長音'] },
+      { hiragana: 'きいろい', romaji: 'kiiroi', fr: 'Jaune', types: ['長音'] },
+      { hiragana: 'おいしい', romaji: 'oishii', fr: 'Délicieux', types: ['長音'] },
+      { hiragana: 'きれい', romaji: 'kirei', fr: 'Joli', types: ['長音'] },
+      { hiragana: 'たのしい', romaji: 'tanoshii', fr: 'Amusant', types: ['長音'] },
+      { hiragana: 'すうじ', romaji: 'suuji', fr: 'Chiffre', types: ['長音'] },
+      { hiragana: 'くうこう', romaji: 'kuukou', fr: 'Aéroport', types: ['長音'] },
+      { hiragana: 'ふね', romaji: 'fune', fr: 'Bateau', types: ['清音'] },
+      { hiragana: 'みせ', romaji: 'mise', fr: 'Magasin', types: ['清音'] },
+      { hiragana: 'えき', romaji: 'eki', fr: 'Gare', types: ['清音'] },
+      { hiragana: 'むら', romaji: 'mura', fr: 'Village', types: ['清音'] },
+      { hiragana: 'あかい', romaji: 'akai', fr: 'Rouge', types: ['清音'] }
+    ];
 
-    const NaoshimaHiraganaPWA = () => {
-      const [installPrompt, setInstallPrompt] = useState(null);
-      const [isInstalled, setIsInstalled] = useState(false);
-      
-      const words = [
-        { hiragana: 'なおしま', romaji: 'naoshima', fr: 'Naoshima (île)', types: ['清音', '長音'] },
-        { hiragana: 'うみ', romaji: 'umi', fr: 'Mer', types: ['清音'] },
-        { hiragana: 'しま', romaji: 'shima', fr: 'Île', types: ['清音'] },
-        { hiragana: 'いえ', romaji: 'ie', fr: 'Maison', types: ['清音'] },
-        { hiragana: 'まち', romaji: 'machi', fr: 'Ville', types: ['清音'] },
-        { hiragana: 'やま', romaji: 'yama', fr: 'Montagne', types: ['清音'] },
-        { hiragana: 'かわ', romaji: 'kawa', fr: 'Rivière', types: ['清音'] },
-        { hiragana: 'はし', romaji: 'hashi', fr: 'Pont', types: ['清音'] },
-        { hiragana: 'みち', romaji: 'michi', fr: 'Chemin', types: ['清音'] },
-        { hiragana: 'ひと', romaji: 'hito', fr: 'Personne', types: ['清音'] },
-        { hiragana: 'あめ', romaji: 'ame', fr: 'Pluie', types: ['清音'] },
-        { hiragana: 'はれ', romaji: 'hare', fr: 'Beau temps', types: ['清音'] },
-        { hiragana: 'かぼちゃ', romaji: 'kabocha', fr: 'Citrouille', types: ['濁音', '拗音'] },
-        { hiragana: 'びじゅつかん', romaji: 'bijutsukan', fr: 'Musée', types: ['濁音', '拗音', '撥音'] },
-        { hiragana: 'ばんごはん', romaji: 'bangohan', fr: 'Dîner', types: ['濁音', '撥音'] },
-        { hiragana: 'あさごはん', romaji: 'asagohan', fr: 'Petit-déjeuner', types: ['濁音'] },
-        { hiragana: 'ひるごはん', romaji: 'hirugohan', fr: 'Déjeuner', types: ['濁音'] },
-        { hiragana: 'おみやげ', romaji: 'omiyage', fr: 'Souvenir', types: ['濁音', '拗音'] },
-        { hiragana: 'じてんしゃ', romaji: 'jitensha', fr: 'Vélo', types: ['濁音', '拗音', '撥音'] },
-        { hiragana: 'てんらんかい', romaji: 'tenrankai', fr: 'Exposition', types: ['濁音', '撥音'] },
-        { hiragana: 'かぞく', romaji: 'kazoku', fr: 'Famille', types: ['濁音'] },
-        { hiragana: 'ちず', romaji: 'chizu', fr: 'Carte', types: ['濁音'] },
-        { hiragana: 'きっぷ', romaji: 'kippu', fr: 'Billet', types: ['半濁音', '促音'] },
-        { hiragana: 'さくひん', romaji: 'sakuhin', fr: 'Œuvre', types: ['半濁音', '撥音'] },
-        { hiragana: 'にほん', romaji: 'nihon', fr: 'Japon', types: ['半濁音', '撥音'] },
-        { hiragana: 'さんぽ', romaji: 'sanpo', fr: 'Promenade', types: ['半濁音', '撥音'] },
-        { hiragana: 'りょかん', romaji: 'ryokan', fr: 'Auberge', types: ['拗音', '撥音'] },
-        { hiragana: 'しゃしん', romaji: 'shashin', fr: 'Photo', types: ['拗音', '撥音'] },
-        { hiragana: 'みずたま', romaji: 'mizutama', fr: 'Pois', types: ['拗音'] },
-        { hiragana: 'ともだち', romaji: 'tomodachi', fr: 'Ami', types: ['拗音'] },
-        { hiragana: 'きょう', romaji: 'kyou', fr: "Aujourd'hui", types: ['拗音', '長音'] },
-        { hiragana: 'ちゃいろ', romaji: 'chairo', fr: 'Marron', types: ['拗音'] },
-        { hiragana: 'がっこう', romaji: 'gakkou', fr: 'École', types: ['促音', '濁音', '長音'] },
-        { hiragana: 'ざっし', romaji: 'zasshi', fr: 'Magazine', types: ['促音', '濁音'] },
-        { hiragana: 'きって', romaji: 'kitte', fr: 'Timbre', types: ['促音'] },
-        { hiragana: 'まっちゃ', romaji: 'matcha', fr: 'Thé vert', types: ['促音', '拗音'] },
-        { hiragana: 'てんき', romaji: 'tenki', fr: 'Météo', types: ['撥音'] },
-        { hiragana: 'みなと', romaji: 'minato', fr: 'Port', types: ['撥音'] },
-        { hiragana: 'こうえん', romaji: 'kouen', fr: 'Parc', types: ['撥音', '長音'] },
-        { hiragana: 'せんせい', romaji: 'sensei', fr: 'Professeur', types: ['撥音', '長音'] },
-        { hiragana: 'でんしゃ', romaji: 'densha', fr: 'Train', types: ['撥音', '濁音', '拗音'] },
-        { hiragana: 'べんとう', romaji: 'bentou', fr: 'Bento', types: ['撥音', '濁音', '長音'] },
-        { hiragana: 'おおきい', romaji: 'ookii', fr: 'Grand', types: ['長音'] },
-        { hiragana: 'きいろい', romaji: 'kiiroi', fr: 'Jaune', types: ['長音'] },
-        { hiragana: 'おいしい', romaji: 'oishii', fr: 'Délicieux', types: ['長音'] },
-        { hiragana: 'きれい', romaji: 'kirei', fr: 'Joli', types: ['長音'] },
-        { hiragana: 'たのしい', romaji: 'tanoshii', fr: 'Amusant', types: ['長音'] },
-        { hiragana: 'すうじ', romaji: 'suuji', fr: 'Chiffre', types: ['長音'] },
-        { hiragana: 'くうこう', romaji: 'kuukou', fr: 'Aéroport', types: ['長音'] },
-        { hiragana: 'ふね', romaji: 'fune', fr: 'Bateau', types: ['清音'] },
-        { hiragana: 'みせ', romaji: 'mise', fr: 'Magasin', types: ['清音'] },
-        { hiragana: 'えき', romaji: 'eki', fr: 'Gare', types: ['清音'] },
-        { hiragana: 'むら', romaji: 'mura', fr: 'Village', types: ['清音'] },
-        { hiragana: 'あかい', romaji: 'akai', fr: 'Rouge', types: ['清音'] }
-      ];
-
+    const App = () => {
       const [usedWords, setUsedWords] = useState([]);
       const [usedTypes, setUsedTypes] = useState(new Set());
       const [currentWord, setCurrentWord] = useState(null);
@@ -112,38 +103,24 @@
       const [showResults, setShowResults] = useState(false);
       const [totalScore, setTotalScore] = useState(0);
       const [roundsCompleted, setRoundsCompleted] = useState(0);
+      const [installPrompt, setInstallPrompt] = useState(null);
+      const [isInstalled, setIsInstalled] = useState(false);
 
       useEffect(() => {
         const handleBeforeInstallPrompt = (e) => {
           e.preventDefault();
           setInstallPrompt(e);
         };
-
-        const handleAppInstalled = () => {
-          setIsInstalled(true);
-          setInstallPrompt(null);
-        };
-
         window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-        window.addEventListener('appinstalled', handleAppInstalled);
-
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-          setIsInstalled(true);
-        }
-
-        return () => {
-          window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-          window.removeEventListener('appinstalled', handleAppInstalled);
-        };
+        if (window.matchMedia('(display-mode: standalone)').matches) setIsInstalled(true);
+        return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       }, []);
 
       const handleInstallClick = async () => {
         if (!installPrompt) return;
         installPrompt.prompt();
         const { outcome } = await installPrompt.userChoice;
-        if (outcome === 'accepted') {
-          setInstallPrompt(null);
-        }
+        if (outcome === 'accepted') setInstallPrompt(null);
       };
 
       useEffect(() => {
@@ -170,23 +147,17 @@
         
         let word;
         if (missingTypes.length > 0 && questionNumber < 9) {
-          const wordsWithMissingTypes = availableWords.filter(w =>
-            w.types.some(type => missingTypes.includes(type))
-          );
-          if (wordsWithMissingTypes.length > 0) {
-            word = wordsWithMissingTypes[Math.floor(Math.random() * wordsWithMissingTypes.length)];
-          } else {
-            word = availableWords[Math.floor(Math.random() * availableWords.length)];
-          }
+          const wordsWithMissingTypes = availableWords.filter(w => w.types.some(type => missingTypes.includes(type)));
+          word = wordsWithMissingTypes.length > 0 
+            ? wordsWithMissingTypes[Math.floor(Math.random() * wordsWithMissingTypes.length)]
+            : availableWords[Math.floor(Math.random() * availableWords.length)];
         } else {
           word = availableWords[Math.floor(Math.random() * availableWords.length)];
         }
         
         const wordLength = word.hiragana.length;
         const sameLengthWords = words.filter(w => 
-          w.romaji !== word.romaji && 
-          !usedWords.includes(w.romaji) &&
-          w.hiragana.length === wordLength
+          w.romaji !== word.romaji && !usedWords.includes(w.romaji) && w.hiragana.length === wordLength
         );
         
         let wrongOptions;
@@ -194,20 +165,16 @@
           wrongOptions = sameLengthWords.sort(() => Math.random() - 0.5).slice(0, 3).map(w => w.romaji);
         } else {
           const similarLengthWords = words.filter(w => 
-            w.romaji !== word.romaji && 
-            !usedWords.includes(w.romaji) &&
-            Math.abs(w.hiragana.length - wordLength) <= 1
+            w.romaji !== word.romaji && !usedWords.includes(w.romaji) && Math.abs(w.hiragana.length - wordLength) <= 1
           );
           wrongOptions = similarLengthWords.sort(() => Math.random() - 0.5).slice(0, 3).map(w => w.romaji);
         }
         
         const allOptions = [...wrongOptions, word.romaji].sort(() => Math.random() - 0.5);
-        
         setCurrentWord(word);
         setOptions(allOptions);
         setFeedback('');
         setUsedWords([...usedWords, word.romaji]);
-        
         const newUsedTypes = new Set(usedTypes);
         word.types.forEach(type => newUsedTypes.add(type));
         setUsedTypes(newUsedTypes);
@@ -215,18 +182,15 @@
 
       const handleAnswer = (selectedRomaji) => {
         const isCorrect = selectedRomaji === currentWord.romaji;
-        
         if (isCorrect) {
           setRoundScore(roundScore + 10);
           setFeedback('✓ 正解！');
         } else {
           setFeedback(`✗ 不正解: ${currentWord.romaji}`);
         }
-        
         setTimeout(() => {
           const nextQuestion = questionNumber + 1;
           setQuestionNumber(nextQuestion);
-          
           if (nextQuestion >= 10) {
             finishRound();
           } else {
@@ -238,14 +202,12 @@
       const finishRound = () => {
         const newTotal = totalScore + roundScore;
         const newRounds = roundsCompleted + 1;
-        
         setTotalScore(newTotal);
         setRoundsCompleted(newRounds);
         try {
           localStorage.setItem('naoshima_total_score', newTotal.toString());
           localStorage.setItem('naoshima_rounds', newRounds.toString());
         } catch (e) {}
-        
         setShowResults(true);
       };
 
@@ -284,7 +246,6 @@
                 <h1 className="text-3xl font-bold text-orange-600 mb-2">🎨 Naoshima Hiragana</h1>
                 <p className="text-gray-600">直島でひらがなを学ぼう</p>
               </div>
-
               {installPrompt && !isInstalled && (
                 <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-4 mb-6">
                   <div className="flex items-center gap-3 mb-3">
@@ -294,22 +255,17 @@
                       <p className="text-sm text-blue-600">オフラインで使用可能！</p>
                     </div>
                   </div>
-                  <button
-                    onClick={handleInstallClick}
-                    className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all"
-                  >
+                  <button onClick={handleInstallClick} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-all">
                     ホーム画面に追加
                   </button>
                 </div>
               )}
-
               {isInstalled && (
                 <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 mb-6 text-center">
                   <p className="text-green-700 font-semibold">✓ アプリがインストールされました！</p>
                   <p className="text-sm text-green-600 mt-1">オフラインで使用できます</p>
                 </div>
               )}
-              
               <div className="bg-orange-50 rounded-2xl p-6 mb-6">
                 <h2 className="font-bold text-lg mb-3 text-orange-800">📖 遊び方:</h2>
                 <ul className="space-y-2 text-sm text-gray-700">
@@ -320,26 +276,15 @@
                   <li>• ラウンドごとにポイント累積！</li>
                 </ul>
               </div>
-
               {totalScore > 0 && (
                 <div className="bg-yellow-50 rounded-xl p-4 mb-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-2xl mr-2">🏆</span>
-                      <span className="text-yellow-800 font-semibold">合計: {totalScore}</span>
-                    </div>
-                    <div>
-                      <span className="text-2xl mr-2">🎖️</span>
-                      <span className="text-orange-800 font-semibold">{roundsCompleted} ラウンド</span>
-                    </div>
+                    <div><span className="text-2xl mr-2">🏆</span><span className="text-yellow-800 font-semibold">合計: {totalScore}</span></div>
+                    <div><span className="text-2xl mr-2">🎖️</span><span className="text-orange-800 font-semibold">{roundsCompleted} ラウンド</span></div>
                   </div>
                 </div>
               )}
-
-              <button
-                onClick={() => setShowStart(false)}
-                className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-              >
+              <button onClick={() => setShowStart(false)} className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
                 スタート
               </button>
             </div>
@@ -349,23 +294,18 @@
 
       if (showResults) {
         const accuracy = Math.round((roundScore / 100) * 100);
-        
         return (
           <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-orange-50 to-red-100 p-4 flex items-center justify-center">
             <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
               <div className="text-center mb-6">
-                <div className="text-6xl mb-4">
-                  {accuracy === 100 ? '🎉' : accuracy >= 70 ? '🌟' : '💪'}
-                </div>
+                <div className="text-6xl mb-4">{accuracy === 100 ? '🎉' : accuracy >= 70 ? '🌟' : '💪'}</div>
                 <h2 className="text-3xl font-bold text-orange-600 mb-2">ラウンド完了！</h2>
               </div>
-
               <div className="space-y-4 mb-6">
                 <div className="bg-orange-50 rounded-2xl p-6 text-center">
                   <div className="text-4xl font-bold text-orange-600 mb-2">{roundScore}/100</div>
                   <div className="text-gray-600">今回のスコア</div>
                 </div>
-
                 <div className="bg-yellow-50 rounded-2xl p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-700">合計スコア:</span>
@@ -376,24 +316,16 @@
                     <span className="text-xl font-semibold text-orange-600">{roundsCompleted}</span>
                   </div>
                 </div>
-
                 <div className="bg-green-50 rounded-2xl p-4 text-center">
                   <div className="text-3xl font-bold text-green-600 mb-1">{accuracy}%</div>
                   <div className="text-gray-600">正答率</div>
                 </div>
               </div>
-
               <div className="space-y-3">
-                <button
-                  onClick={startNewRound}
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-                >
+                <button onClick={startNewRound} className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
                   次のラウンド
                 </button>
-                <button
-                  onClick={resetGame}
-                  className="w-full bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-300 transition-all"
-                >
+                <button onClick={resetGame} className="w-full bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-300 transition-all">
                   メニューに戻る
                 </button>
               </div>
@@ -418,12 +350,9 @@
                     <div className="text-xs text-gray-500">問題</div>
                   </div>
                 </div>
-                <button onClick={resetGame} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-2xl">
-                  🔄
-                </button>
+                <button onClick={resetGame} className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-2xl">🔄</button>
               </div>
             </div>
-
             {currentWord && (
               <div className="bg-white rounded-3xl shadow-2xl p-8 mb-4">
                 <div className="text-center mb-6">
@@ -431,26 +360,17 @@
                   <div className="text-6xl font-bold text-orange-600 mb-3">{currentWord.hiragana}</div>
                   <p className="text-sm text-gray-600 italic">{currentWord.fr}</p>
                 </div>
-
                 <div className="space-y-3">
                   {options.map((option, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswer(option)}
-                      disabled={feedback !== ''}
+                    <button key={index} onClick={() => handleAnswer(option)} disabled={feedback !== ''}
                       className={`w-full p-4 rounded-xl font-semibold text-lg transition-all transform hover:scale-105 ${
-                        feedback === '' 
-                          ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white shadow-md hover:shadow-lg'
-                          : option === currentWord.romaji
-                          ? 'bg-green-500 text-white'
-                          : 'bg-gray-300 text-gray-600'
-                      }`}
-                    >
+                        feedback === '' ? 'bg-gradient-to-r from-orange-400 to-red-400 text-white shadow-md hover:shadow-lg'
+                        : option === currentWord.romaji ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'
+                      }`}>
                       {option}
                     </button>
                   ))}
                 </div>
-
                 {feedback && (
                   <div className={`mt-6 p-4 rounded-xl text-center font-bold text-lg ${
                     feedback.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
@@ -460,17 +380,14 @@
                 )}
               </div>
             )}
-
             <div className="bg-white rounded-2xl shadow-lg p-4">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">進行状況</span>
                 <span className="text-sm font-semibold text-orange-600">{questionNumber}/10</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div 
-                  className="bg-gradient-to-r from-orange-500 to-red-500 h-3 rounded-full transition-all duration-300"
-                  style={{ width: `${(questionNumber / 10) * 100}%` }}
-                />
+                <div className="bg-gradient-to-r from-orange-500 to-red-500 h-3 rounded-full transition-all duration-300"
+                  style={{ width: `${(questionNumber / 10) * 100}%` }} />
               </div>
             </div>
           </div>
@@ -478,15 +395,14 @@
       );
     };
 
-    ReactDOM.render(<NaoshimaHiraganaPWA />, document.getElementById('root'));
+    ReactDOM.render(<App />, document.getElementById('root'));
   </script>
-
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('service-worker.js')
-          .then(registration => console.log('SW registered:', registration))
-          .catch(err => console.log('SW registration failed:', err));
+          .then(reg => console.log('SW registered:', reg))
+          .catch(err => console.log('SW failed:', err));
       });
     }
   </script>
